@@ -1,0 +1,798 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Pimerkan · Adiestramiento y modificación de conducta canina</title>
+<meta name="description" content="Pimerkan: club de adiestramiento canino, modificación de conducta y psicología del comportamiento en Camí del Flix, Bigues i Riells. Ansiedad, reactividad, cachorros y obediencia." />
+
+<!-- Open Graph básico: mismo contenido que title/description, sin inventar dominio, og:url ni og:image (se añadirán cuando exista dominio de producción real). -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Pimerkan · Adiestramiento y modificación de conducta canina" />
+<meta property="og:description" content="Club de adiestramiento canino, modificación de conducta y psicología del comportamiento en Camí del Flix, Bigues i Riells. Ansiedad, reactividad, cachorros y obediencia." />
+<meta property="og:locale" content="es_ES" />
+<!-- TODO producción: añadir og:url, og:image y <link rel="canonical"> en cuanto exista un dominio definitivo. No inventar. -->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,450;0,9..144,500;0,9..144,600;0,9..144,650;1,9..144,450;1,9..144,500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<!-- PROTOTIPO: Tailwind vía CDN. Antes de producción, compilar Tailwind (CLI/PostCSS) y eliminar esta etiqueta <script> del CDN. -->
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          // Paleta "verde bosque" — mismos roles que la versión azul, colores nuevos:
+          // cream = Cream (fondo) · ink = Bark Brown (texto) · navy = Ever-Green (color dominante)
+          // navy-deep = Forest Green (oscuro / hover / fondo de secciones oscuras) · terracotta = Burnt Orange (acento)
+          // terracotta-deep = Timber Red (hover del acento) · light-blue = Cream (sin equivalente propio en esta paleta,
+          // se reutiliza el cream como texto/acento claro sobre fondo oscuro, como en el moodboard de referencia)
+          cream: '#EFE8D8',
+          ink: '#28211B',
+          navy: '#3E563E',
+          'navy-deep': '#1F2F22',
+          terracotta: '#934A22',
+          'terracotta-deep': '#6D4338',
+          'light-blue': '#EFE8D8',
+        },
+        fontFamily: {
+          serif: ['"Fraunces"', 'ui-serif', 'Georgia', 'serif'],
+          sans: ['"Plus Jakarta Sans"', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        },
+        boxShadow: {
+          image: '0 24px 48px -28px rgba(40,33,27,0.22)',
+        },
+      },
+    },
+  };
+</script>
+
+<style>
+  html{scroll-behavior:smooth}
+  body{background:#EFE8D8}
+  .glass{background:rgba(239,232,216,.75);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+  .fade-up{opacity:0;transform:translateY(22px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+  .fade-up.in{opacity:1;transform:translateY(0)}
+  .serif-italic{font-family:'Fraunces',serif;font-style:italic;font-optical-sizing:auto}
+
+  /* ---------- Button system ---------- */
+  .btn-primary{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;background:#3E563E;color:#EFE8D8;font-weight:600;font-size:15px;padding:.95rem 1.75rem;border-radius:8px;transition:background-color .2s ease}
+  .btn-primary:hover{background:#1F2F22}
+  .btn-primary--terracotta{background:#934A22}
+  .btn-primary--terracotta:hover{background:#6D4338}
+  .btn-secondary{display:inline-flex;align-items:center;justify-content:center;gap:.6rem;border:1.5px solid rgba(40,33,27,.18);color:#28211B;font-weight:600;font-size:15px;padding:.9rem 1.7rem;border-radius:8px;transition:border-color .2s ease,color .2s ease}
+  .btn-secondary:hover{border-color:#3E563E;color:#3E563E}
+  .btn-secondary--light{border-color:rgba(255,255,255,.3);color:#EFE8D8}
+  .btn-secondary--light:hover{border-color:#fff;color:#fff}
+  .btn-link{display:inline-flex;align-items:center;gap:.4rem;font-weight:600;transition:gap .2s ease,color .2s ease}
+  .btn-link:hover{gap:.65rem}
+
+  /* ---------- Method timeline ---------- */
+  .tl-line{background:rgba(255,255,255,.14)}
+  .tl-fill{background:#EFE8D8;height:0%;transition:height .45s cubic-bezier(.4,0,.2,1)}
+  .tl-step{border-radius:10px;transition:background-color .3s ease}
+  .tl-step:hover{background:rgba(255,255,255,.03)}
+  .tl-dot{border:1.5px solid rgba(255,255,255,.2);color:rgba(239,232,216,.45);background:transparent;transition:all .3s ease}
+  .tl-title{color:rgba(239,232,216,.45);font-weight:600;transition:color .3s ease}
+  .tl-desc{color:rgba(239,232,216,.6);max-height:0;opacity:0;margin-top:0;overflow:hidden;transition:max-height .35s ease,opacity .3s ease .05s,margin-top .35s ease}
+  .tl-step[data-active="true"] .tl-dot{background:#EFE8D8;border-color:#EFE8D8;color:#28211B}
+  .tl-step[data-active="true"] .tl-title{color:#EFE8D8;font-weight:700}
+  .tl-step[data-active="true"] .tl-desc{max-height:120px;opacity:1;margin-top:.5rem}
+
+  /* ---------- Focus visible (claro en todos los elementos interactivos, no solo hover) ---------- */
+  :focus-visible{outline:2px solid #3E563E !important;outline-offset:2px !important;border-radius:4px}
+  #metodo :focus-visible,#contacto :focus-visible,footer :focus-visible{outline-color:#EFE8D8 !important}
+
+  /* ---------- Formulario: estado de error (no depende solo del color: también icono + texto) ---------- */
+  .field-error{border-color:#934A22 !important}
+
+  /* ---------- Método / timeline: en mobile y tablet no requiere interacción, se muestran los 4 pasos abiertos ---------- */
+  @media (max-width:1023px){
+    #tl-progress{display:none}
+    .tl-dot{background:#EFE8D8 !important;border-color:#EFE8D8 !important;color:#28211B !important}
+    .tl-title{color:#EFE8D8 !important;font-weight:700 !important}
+    .tl-desc{max-height:none !important;opacity:1 !important;margin-top:.5rem !important}
+    .tl-step{cursor:default}
+  }
+
+  /* ---------- Reduced motion: sin animaciones de entrada, sin scroll suave, sin transformaciones ---------- */
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto}
+    .fade-up{opacity:1 !important;transform:none !important}
+    *,*::before,*::after{
+      animation-duration:.001ms !important;
+      animation-iteration-count:1 !important;
+      transition-duration:.001ms !important;
+      scroll-behavior:auto !important;
+    }
+  }
+</style>
+</head>
+
+<body class="font-sans text-ink antialiased">
+
+<!-- =================== NAV =================== -->
+<header class="sticky top-0 z-50 w-full glass border-b border-ink/8">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 py-4 flex items-center justify-between">
+    <a href="#top" class="flex items-center gap-2.5">
+      <img src="img/logo-nav.png" alt="" width="320" height="306" class="h-8 w-auto" />
+      <span class="font-serif font-medium text-[18px] tracking-tight text-ink">Pimerkan</span>
+    </a>
+    <nav aria-label="Navegación principal" class="hidden md:flex items-center gap-8 text-[14px] font-medium text-ink/70">
+      <a href="#especialidades" class="hover:text-navy transition-colors">Especialidades</a>
+      <a href="#metodo" class="hover:text-navy transition-colors">Método</a>
+      <a href="#zona" class="hover:text-navy transition-colors">Ubicación</a>
+      <a href="#contacto" class="hover:text-navy transition-colors">Contacto</a>
+    </nav>
+    <div class="flex items-center gap-2">
+      <a href="tel:+34675927409" class="inline-flex items-center gap-2 border border-ink/15 text-ink text-[13px] font-semibold px-3.5 sm:px-4 py-2 rounded-lg hover:border-navy hover:text-navy transition-colors duration-200">
+        <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5c0 8.3 6.7 15 15 15l3-4.5-6-2-1.7 2A13 13 0 018.5 8.7l2-1.7-2-6z"/></svg>
+        <span class="hidden sm:inline">675 92 74 09</span><span class="sm:hidden">Llamar</span>
+      </a>
+      <button type="button" id="mobile-menu-btn" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu" class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg border border-ink/15 text-ink hover:border-navy hover:text-navy transition-colors duration-200">
+        <svg id="menu-icon-open" aria-hidden="true" focusable="false" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="menu-icon-close" aria-hidden="true" focusable="false" hidden width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+  </div>
+  <div id="mobile-menu" hidden class="md:hidden border-t border-ink/8 bg-cream">
+    <nav aria-label="Navegación principal (móvil)" class="max-w-6xl mx-auto px-5 sm:px-8 py-3 flex flex-col text-[15.5px] font-medium text-ink/80">
+      <a href="#especialidades" class="py-3 border-b border-ink/8 hover:text-navy transition-colors">Especialidades</a>
+      <a href="#metodo" class="py-3 border-b border-ink/8 hover:text-navy transition-colors">Método</a>
+      <a href="#zona" class="py-3 border-b border-ink/8 hover:text-navy transition-colors">Ubicación</a>
+      <a href="#contacto" class="py-3 hover:text-navy transition-colors">Contacto</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+<!-- =================== HERO =================== -->
+<section id="top" class="relative pt-10 md:pt-14 pb-14 md:pb-16 overflow-hidden bg-cream">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <div class="grid lg:grid-cols-12 gap-10 lg:gap-8 items-start">
+
+      <div class="lg:col-span-5 fade-up lg:pt-4">
+        <div class="inline-flex items-center gap-2 text-[12px] font-bold tracking-[0.16em] uppercase text-navy mb-5">
+          <span class="w-6 h-px bg-navy"></span> Club canino · Bigues i Riells
+        </div>
+        <h1 class="font-serif font-medium text-ink text-[36px] sm:text-[46px] lg:text-[56px] leading-[1.08] tracking-tight">
+          La conducta de tu perro, <span class="serif-italic text-terracotta">entendida</span> antes que corregida.
+        </h1>
+        <!-- TODO CONTENIDO: confirmar con Rafa que quiere utilizar y puede respaldar el posicionamiento "con base científica". Si no, reformular antes de producción. -->
+        <p class="mt-6 text-[16.5px] md:text-[18px] font-medium leading-[1.65] text-ink/75 max-w-[42ch]">
+          Adiestramiento, modificación de conducta y psicología canina con base científica, en Camí del Flix. Trabajo con perros de cualquier raza y tamaño — casos de ansiedad, reactividad y obediencia, con método, no con suerte.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a href="https://wa.me/34675927409" target="_blank" rel="noopener" class="btn-primary">
+            Cuéntame vuestro caso
+            <svg aria-hidden="true" focusable="false" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a href="#especialidades" class="btn-link text-ink/70 hover:text-navy text-[14.5px]">
+            Ver especialidades
+            <svg aria-hidden="true" focusable="false" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 fade-up">
+        <div class="relative rounded-[20px] overflow-hidden shadow-image aspect-[4/5] sm:aspect-[16/11] lg:aspect-[4/4.6]">
+          <img src="img/cover.jpg" width="960" height="638" alt="Adiestrador de Pimerkan trabajando obediencia en el campo" class="w-full h-full object-cover object-center" />
+        </div>
+        <!-- TODO CONTENIDO: validar este dato antes de producción. ("técnico en modificación de conducta" — ¿es un título/formación confirmada, o conviene usar una descripción no técnica del rol?) -->
+        <div class="mt-4 pt-4 border-t border-ink/10 text-[13.5px] leading-relaxed">
+          <span class="font-sans font-semibold text-ink">Rafa Puente</span>
+          <span class="text-ink/60"> — Adiestrador y técnico en modificación de conducta</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!--
+      TODO (Jenifer/Rafa) — Prueba social, pendiente de confirmar antes de producción:
+        1. Confirmar la fuente exacta de "23 opiniones" y la valoración "5,0".
+        2. Comprobar que "100% recomendado" es un dato real y verificable (y de dónde sale).
+        3. Si se confirma la plataforma de origen, identificarla visualmente (texto o logo, según corresponda).
+        4. Enlazar a las reseñas reales si existe una URL pública a la que dirigir.
+      Mientras no esté confirmado: NO afirmar que son de Google ni de Facebook, NO añadir logos de plataformas,
+      NO añadir enlaces inventados. Las cifras actuales (100%, 23, 5,0) se mantienen tal cual, sin inventar
+      métricas nuevas.
+      Si finalmente se confirma que las reseñas son de Google, una formulación posible sería:
+        "★★★★★ 5,0 en Google · 23 reseñas"
+      pero esta redacción NO debe mostrarse en la interfaz hasta confirmar la fuente.
+    -->
+    <div class="mt-10 lg:mt-12 pt-6 border-t border-ink/10 fade-up flex flex-wrap items-center gap-x-2.5 gap-y-2 text-[13.5px] text-ink/65">
+      <span class="text-ink/80 text-[12px] tracking-[1px]" aria-hidden="true">★★★★★</span>
+      <span class="sr-only">Valoración 5 de 5 estrellas.</span>
+      <span class="font-semibold text-ink">100% recomendado</span>
+      <span class="text-ink/40" aria-hidden="true">·</span>
+      <span>23 opiniones · 5,0</span>
+      <span class="text-ink/40" aria-hidden="true">·</span>
+      <span>Club activo desde 2020</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- =================== PAIN POINTS: editorial two-column, emotional & light =================== -->
+<section class="py-16 md:py-20 bg-cream">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="grid lg:grid-cols-12 gap-8 lg:gap-16">
+
+      <div class="lg:col-span-4 fade-up">
+        <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-terracotta mb-3">Te entiendo</div>
+        <h2 class="font-serif font-medium text-[28px] sm:text-[32px] text-navy leading-tight">¿Te suena alguno de estos casos?</h2>
+        <p class="mt-4 text-[14.5px] text-ink/55 leading-relaxed max-w-[32ch]">Antes de hablar de método, hablemos de lo que os trae hasta aquí.</p>
+      </div>
+
+      <div class="lg:col-span-8 fade-up">
+        <div class="border-t border-b border-ink/12 divide-y divide-ink/12">
+
+          <a href="#metodo" class="group flex gap-5 sm:gap-6 py-6">
+            <span class="font-sans text-[13px] font-semibold text-ink/60 pt-0.5 w-5 shrink-0">01</span>
+            <div>
+              <h3 class="font-sans text-[16px] font-semibold text-ink">Tira de la correa sin parar</h3>
+              <p class="mt-1.5 text-[14px] text-ink/55 leading-relaxed">Paseos que se convierten en un pulso constante, en vez de un momento de disfrute.</p>
+              <span class="btn-link mt-2 text-[13px] text-ink/65 group-hover:text-navy">Cómo lo trabajamos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+
+          <a href="#metodo" class="group flex gap-5 sm:gap-6 py-6">
+            <span class="font-sans text-[13px] font-semibold text-ink/60 pt-0.5 w-5 shrink-0">02</span>
+            <div>
+              <h3 class="font-sans text-[16px] font-semibold text-ink">Ansiedad por separación</h3>
+              <p class="mt-1.5 text-[14px] text-ink/55 leading-relaxed">Destrozos en casa o llantos cuando te marchas.</p>
+              <span class="btn-link mt-2 text-[13px] text-ink/65 group-hover:text-navy">Cómo lo trabajamos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+
+          <a href="#metodo" class="group flex gap-5 sm:gap-6 py-6">
+            <span class="font-sans text-[13px] font-semibold text-ink/60 pt-0.5 w-5 shrink-0">03</span>
+            <div>
+              <h3 class="font-sans text-[16px] font-semibold text-ink">Reactividad con otros perros</h3>
+              <p class="mt-1.5 text-[14px] text-ink/55 leading-relaxed">Ladridos, tensión y situaciones incómodas durante el paseo.</p>
+              <span class="btn-link mt-2 text-[13px] text-ink/65 group-hover:text-navy">Cómo lo trabajamos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+
+          <a href="#metodo" class="group flex gap-5 sm:gap-6 py-6">
+            <span class="font-sans text-[13px] font-semibold text-ink/60 pt-0.5 w-5 shrink-0">04</span>
+            <div>
+              <h3 class="font-sans text-[16px] font-semibold text-ink">Problemas de obediencia</h3>
+              <p class="mt-1.5 text-[14px] text-ink/55 leading-relaxed">Llamadas que no funcionan y normas que no se sostienen en casa.</p>
+              <span class="btn-link mt-2 text-[13px] text-ink/65 group-hover:text-navy">Cómo lo trabajamos <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </div>
+          </a>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =================== ESPECIALIDADES: structured, informative =================== -->
+<section id="especialidades" class="py-20 md:py-24 bg-cream">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="max-w-xl mb-12 md:mb-14 fade-up">
+      <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-navy mb-3">Especialidades</div>
+      <h2 class="font-serif font-medium text-[32px] sm:text-[38px] text-ink leading-tight">Un plan de trabajo para cada perro y cada familia</h2>
+      <p class="mt-4 text-[15.5px] text-ink/60 leading-relaxed max-w-[46ch]">Nada de recetas genéricas: cada caso se valora de forma individual para entender qué está ocurriendo y definir cómo trabajarlo.</p>
+    </div>
+
+    <!-- Featured: photo + text, asymmetric, no card chrome -->
+    <div class="grid md:grid-cols-5 gap-8 md:gap-12 items-start fade-up mb-16 md:mb-20">
+      <div class="md:col-span-3 relative rounded-[20px] overflow-hidden shadow-image aspect-[4/3] md:aspect-[16/11]">
+        <img src="img/cover.jpg" width="960" height="638" loading="lazy" alt="Sesión de obediencia y educación base al aire libre" class="absolute inset-0 w-full h-full object-cover object-[75%_28%]" />
+      </div>
+      <div class="md:col-span-2 md:pt-4">
+        <div class="text-[11.5px] font-bold uppercase tracking-[0.14em] text-navy mb-3">Base de todo · empieza aquí</div>
+        <h3 class="font-sans text-ink text-[22px] sm:text-[24px] font-semibold leading-snug">Obediencia y educación</h3>
+        <p class="mt-3 text-[15px] text-ink/60 leading-relaxed">Paseo sin tirones, llamada fiable y calma real — la base sobre la que se apoya cualquier otro trabajo, para cachorros y adultos de cualquier raza o tamaño.</p>
+        <ul class="mt-5 space-y-2.5">
+          <li class="flex items-center gap-2.5 text-[14px] text-ink/75"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3E563E" stroke-width="2.6" class="shrink-0" aria-hidden="true" focusable="false"><path d="M5 12l4 4 10-10"/></svg>Paseo sin tirones de correa</li>
+          <li class="flex items-center gap-2.5 text-[14px] text-ink/75"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3E563E" stroke-width="2.6" class="shrink-0" aria-hidden="true" focusable="false"><path d="M5 12l4 4 10-10"/></svg>Llamada fiable en cualquier entorno</li>
+          <li class="flex items-center gap-2.5 text-[14px] text-ink/75"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#3E563E" stroke-width="2.6" class="shrink-0" aria-hidden="true" focusable="false"><path d="M5 12l4 4 10-10"/></svg>Calma real en casa y en la calle</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Secondary specialties: dense informational rows, icon + text inline -->
+    <div class="grid sm:grid-cols-2 gap-x-10 border-t border-ink/10">
+
+      <div class="flex items-start gap-3.5 border-b border-ink/10 py-5 fade-up">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="shrink-0 mt-0.5 text-navy/55" aria-hidden="true" focusable="false"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-4 3.1-6.5 7-6.5s7 2.5 7 6.5"/></svg>
+        <div>
+          <h3 class="font-sans text-[15.5px] font-semibold text-ink">Clases individuales</h3>
+          <p class="mt-1 text-[13.5px] text-ink/60 leading-relaxed">Sesiones 1:1 para casos concretos: ansiedad, reactividad, tirones o falta de obediencia.</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3.5 border-b border-ink/10 py-5 fade-up">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="shrink-0 mt-0.5 text-navy/55" aria-hidden="true" focusable="false"><circle cx="8" cy="8" r="2.6"/><circle cx="16" cy="8" r="2.6"/><path d="M3 19c0-3.3 2.4-5.5 5.5-5.5S14 15.7 14 19"/><path d="M13.3 13.6c2.7.3 4.7 2.4 4.7 5.4"/></svg>
+        <div>
+          <h3 class="font-sans text-[15.5px] font-semibold text-ink">Clases grupales</h3>
+          <p class="mt-1 text-[13.5px] text-ink/60 leading-relaxed">Socialización y práctica en grupo, con otras familias del club.</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3.5 border-b border-ink/10 py-5 fade-up">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="shrink-0 mt-0.5 text-navy/55" aria-hidden="true" focusable="false"><circle cx="6" cy="9" r="1.6"/><circle cx="10" cy="5.6" r="1.6"/><circle cx="14" cy="5.6" r="1.6"/><circle cx="18" cy="9" r="1.6"/><path d="M12.4 11c-3.4 0-6.2 1.9-6.2 4.4 0 2 2 3.5 5.2 3.5h2c3.2 0 5.2-1.5 5.2-3.5 0-2.5-2.8-4.4-6.2-4.4z"/></svg>
+        <div>
+          <h3 class="font-sans text-[15.5px] font-semibold text-ink">Cachorros 0–6 meses</h3>
+          <p class="mt-1 text-[13.5px] text-ink/60 leading-relaxed">Socialización temprana antes de que el hábito se instale.</p>
+        </div>
+      </div>
+
+      <div class="flex items-start gap-3.5 border-b border-ink/10 py-5 fade-up">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="shrink-0 mt-0.5 text-navy/55" aria-hidden="true" focusable="false"><path d="M3 12l4-8 4 5 3-6 4 9-4 8-4-5-3 6z"/></svg>
+        <div>
+          <h3 class="font-sans text-[15.5px] font-semibold text-ink">Competición</h3>
+          <p class="mt-1 text-[13.5px] text-ink/60 leading-relaxed">Preparación técnica para exposición y deporte canino.</p>
+        </div>
+      </div>
+
+      <div class="sm:col-span-2 flex items-start gap-3.5 border-b border-ink/10 py-5 fade-up">
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="shrink-0 mt-0.5 text-navy/55" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4.5"/><circle cx="12" cy="12" r="1"/></svg>
+        <div>
+          <h3 class="font-sans text-[15.5px] font-semibold text-ink">Rastreo</h3>
+          <p class="mt-1 text-[13.5px] text-ink/60 leading-relaxed">Ejercicios de olfato y concentración en campo abierto.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Closing: light editorial line, not a card -->
+    <div class="pt-8 mt-2 fade-up flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div>
+        <h3 class="font-sans text-[17px] font-semibold text-ink">¿No ves tu caso?</h3>
+        <p class="mt-1 text-[14px] text-ink/55">Cuéntame la situación y vemos juntos el plan más adecuado.</p>
+      </div>
+      <a href="#contacto" class="btn-link text-navy text-[14px] shrink-0">Hablemos <svg aria-hidden="true" focusable="false" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+    </div>
+
+  </div>
+</section>
+
+<!-- =================== DETRÁS DE PIMERKAN =================== -->
+<!-- Foto reutilizada temporalmente (gallery-2.jpg). Sustituir por una fotografía de retrato/trabajo de Rafa dedicada en cuanto esté disponible. -->
+<section class="py-20 md:py-24 bg-cream">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="grid md:grid-cols-12 gap-10 md:gap-14 items-center">
+
+      <div class="md:col-span-5 fade-up">
+        <div class="relative rounded-[20px] overflow-hidden shadow-image aspect-[4/5]">
+          <img src="img/gallery-2.jpg" width="206" height="206" loading="lazy" alt="Rafa Puente trabajando con un perro en Camí del Flix" class="w-full h-full object-cover" />
+        </div>
+      </div>
+
+      <div class="md:col-span-7 fade-up">
+        <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-navy mb-3">Detrás de Pimerkan</div>
+        <h2 class="font-serif font-medium text-[30px] sm:text-[36px] text-ink leading-tight">Entender al perro es siempre el punto de partida.</h2>
+        <p class="mt-5 text-[16px] text-ink/65 leading-relaxed max-w-[50ch]">Cada plan nace de pasar tiempo con el perro y con la familia antes de proponer nada, para entender primero qué está pasando realmente.</p>
+        <p class="mt-4 text-[14.5px] text-ink/60">Pimerkan, activo en Bigues i Riells desde 2020.</p>
+        <!-- TODO (Jenifer/Rafa): si hay formación, certificaciones o acreditaciones reales de Rafa, añadirlas aquí como una línea o lista breve. No inventar datos. -->
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =================== MÉTODO PIMERKAN =================== -->
+<section id="metodo" class="relative bg-ink py-28 md:py-36 overflow-hidden">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 relative">
+    <div class="grid lg:grid-cols-12 gap-14">
+
+      <div class="lg:col-span-5 fade-up">
+        <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-light-blue mb-3">El método</div>
+        <h2 class="font-serif font-medium text-[32px] sm:text-[36px] text-cream leading-tight">Cuatro pasos, un solo criterio: entender antes de intervenir</h2>
+        <!-- TODO CONTENIDO: validar este dato antes de producción. (afirmación de eficacia de aprendizaje — "aprende mejor que uno que solo obedece por presión" — está ligada al mismo posicionamiento "con base científica" del hero; confirmar con Rafa o reformular como opinión/filosofía de trabajo en vez de afirmación comparativa.) -->
+        <p class="font-serif italic mt-8 text-[22px] md:text-[26px] leading-[1.25] text-cream/85 max-w-[34ch]">Un perro que entiende lo que se le pide aprende mejor que uno que solo obedece por presión.</p>
+      </div>
+
+      <div class="lg:col-span-7">
+        <div class="relative fade-up">
+          <div id="tl-progress" class="absolute left-5 top-3 bottom-3 w-[2px] tl-line rounded-full overflow-hidden">
+            <div id="tlFill" class="w-full tl-fill rounded-full" style="height:25%"></div>
+          </div>
+          <div class="space-y-1">
+
+            <button type="button" data-step="1" data-active="true" aria-expanded="true" aria-current="step" aria-controls="tl-desc-1" onclick="pkSetStep(1)" class="tl-step w-full text-left flex gap-6 px-3 -mx-3 py-6 cursor-pointer">
+              <span class="tl-dot relative z-10 shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-[14px]" aria-hidden="true">01</span>
+              <div class="pt-1.5">
+                <h3 class="tl-title font-sans text-[17px] sm:text-[18px]">Valoración inicial</h3>
+                <p id="tl-desc-1" class="tl-desc text-[14px] leading-relaxed max-w-[54ch]">Conozco al perro y a la familia: rutinas, contexto e historia real del caso.</p>
+              </div>
+            </button>
+
+            <button type="button" data-step="2" data-active="false" aria-expanded="false" aria-controls="tl-desc-2" onclick="pkSetStep(2)" class="tl-step w-full text-left flex gap-6 px-3 -mx-3 py-6 cursor-pointer">
+              <span class="tl-dot relative z-10 shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-[14px]" aria-hidden="true">02</span>
+              <div class="pt-1.5">
+                <h3 class="tl-title font-sans text-[17px] sm:text-[18px]">Plan a medida</h3>
+                <p id="tl-desc-2" class="tl-desc text-[14px] leading-relaxed max-w-[54ch]">Ni dos perros ni dos familias son iguales: el plan se adapta a edad, carácter y ritmo de vida.</p>
+              </div>
+            </button>
+
+            <button type="button" data-step="3" data-active="false" aria-expanded="false" aria-controls="tl-desc-3" onclick="pkSetStep(3)" class="tl-step w-full text-left flex gap-6 px-3 -mx-3 py-6 cursor-pointer">
+              <span class="tl-dot relative z-10 shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-[14px]" aria-hidden="true">03</span>
+              <div class="pt-1.5">
+                <h3 class="tl-title font-sans text-[17px] sm:text-[18px]">Refuerzo positivo</h3>
+                <!-- TODO CONTENIDO: validar este dato antes de producción. ("Sin castigo, sin miedo" describe un método concreto — confirmar con Rafa que representa fielmente su forma de trabajar en todos los casos antes de afirmarlo como característica del método.) -->
+                <p id="tl-desc-3" class="tl-desc text-[14px] leading-relaxed max-w-[54ch]">Se premia lo que queremos que se repita. Sin castigo, sin miedo — el aprendizaje se sostiene.</p>
+              </div>
+            </button>
+
+            <button type="button" data-step="4" data-active="false" aria-expanded="false" aria-controls="tl-desc-4" onclick="pkSetStep(4)" class="tl-step w-full text-left flex gap-6 px-3 -mx-3 py-6 cursor-pointer">
+              <span class="tl-dot relative z-10 shrink-0 w-10 h-10 rounded-full flex items-center justify-center font-sans font-bold text-[14px]" aria-hidden="true">04</span>
+              <div class="pt-1.5">
+                <h3 class="tl-title font-sans text-[17px] sm:text-[18px]">Seguimiento real</h3>
+                <p id="tl-desc-4" class="tl-desc text-[14px] leading-relaxed max-w-[54ch]">Acompañamiento entre sesiones para que lo aprendido se mantenga fuera del entrenamiento.</p>
+              </div>
+            </button>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =================== TESTIMONIOS (PREPARADA, NO PUBLICAR TODAVÍA) ===================
+  TODO CONTENIDO: seleccionar 2–3 reseñas reales de Pimerkan, confirmar autorización/fuente y sustituir
+  los placeholders antes de mostrar esta sección.
+
+  Ubicación narrativa (ya respetada por la posición de este comentario en el archivo): después de
+  "El método" y antes de "En acción" — Quién está detrás → Método → Qué dicen quienes han trabajado
+  con Pimerkan → Pimerkan en acción.
+
+  Nada de lo que hay dentro de este bloque es contenido real: son placeholders técnicos, sin nombres,
+  perros, problemas, resultados, valoraciones ni fuente inventados. No convertir en Google/Facebook
+  hasta confirmarlo. No quitar el comentario ni publicar esta sección hasta reemplazar TODO lo marcado
+  como "pendiente" por contenido real y autorizado.
+
+  Diseño: editorial, sin cards, sin sombras, sin avatares ni fotos de stock, sin carrusel — mismo
+  lenguaje que el resto de la web (comilla grande y discreta en Fraunces itálica, separadores finos
+  tipo "¿Te suena alguno de estos casos?", texto protagonista). Preparado para textos de longitud
+  variable (ancho máximo de párrafo + flujo natural, no alturas fijas). El tercer testimonio es
+  opcional: usar 2 o 3 según cuántas reseñas reales confirmadas haya.
+
+<section id="testimonios" class="py-20 md:py-24 bg-cream">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+
+    <div class="max-w-xl mb-12 md:mb-14 fade-up">
+      <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-navy mb-3">Testimonios</div>
+      <h2 class="font-serif font-medium text-[32px] sm:text-[38px] text-ink leading-tight">Lo que cuentan quienes han trabajado con Pimerkan</h2>
+    </div>
+
+    <div class="border-t border-ink/12 divide-y divide-ink/12">
+
+      TESTIMONIO 01
+      <div class="py-10 md:py-12 fade-up grid md:grid-cols-12 gap-4 md:gap-10">
+        <span class="md:col-span-1 serif-italic text-ink/15 text-[52px] leading-none" aria-hidden="true">“</span>
+        <div class="md:col-span-11">
+          <p class="font-serif italic text-[19px] sm:text-[21px] leading-relaxed text-ink max-w-[60ch]">[Texto real pendiente]</p>
+          <div class="mt-4 text-[14px]">
+            <span class="font-sans font-semibold text-ink">[Nombre pendiente]</span>
+            <span class="text-ink/55"> — [Contexto / perro pendiente]</span>
+          </div>
+          <div class="mt-1 text-[12.5px] text-ink/45">[Fuente pendiente]</div>
+        </div>
+      </div>
+
+      TESTIMONIO 02
+      <div class="py-10 md:py-12 fade-up grid md:grid-cols-12 gap-4 md:gap-10">
+        <span class="md:col-span-1 serif-italic text-ink/15 text-[52px] leading-none" aria-hidden="true">“</span>
+        <div class="md:col-span-11">
+          <p class="font-serif italic text-[19px] sm:text-[21px] leading-relaxed text-ink max-w-[60ch]">[Texto real pendiente]</p>
+          <div class="mt-4 text-[14px]">
+            <span class="font-sans font-semibold text-ink">[Nombre pendiente]</span>
+            <span class="text-ink/55"> — [Contexto / perro pendiente]</span>
+          </div>
+          <div class="mt-1 text-[12.5px] text-ink/45">[Fuente pendiente]</div>
+        </div>
+      </div>
+
+      TESTIMONIO 03 (opcional, si hay una tercera reseña real confirmada)
+      <div class="py-10 md:py-12 fade-up grid md:grid-cols-12 gap-4 md:gap-10">
+        <span class="md:col-span-1 serif-italic text-ink/15 text-[52px] leading-none" aria-hidden="true">“</span>
+        <div class="md:col-span-11">
+          <p class="font-serif italic text-[19px] sm:text-[21px] leading-relaxed text-ink max-w-[60ch]">[Texto real pendiente]</p>
+          <div class="mt-4 text-[14px]">
+            <span class="font-sans font-semibold text-ink">[Nombre pendiente]</span>
+            <span class="text-ink/55"> — [Contexto / perro pendiente]</span>
+          </div>
+          <div class="mt-1 text-[12.5px] text-ink/45">[Fuente pendiente]</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+-->
+
+<!-- =================== GALERÍA / EN ACCIÓN =================== -->
+<!-- Composición editorial asimétrica: 1 protagonista + 1 vertical + 3 secundarias más pequeñas. Solo 2 captions externos; el resto de fotos, limpias. -->
+<section class="py-24 md:py-32 bg-cream">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="flex items-end justify-between mb-12 flex-wrap gap-6 fade-up">
+      <div>
+        <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-navy mb-3">En acción</div>
+        <h2 class="font-serif font-medium text-[28px] sm:text-[32px] text-ink leading-tight">En el terreno, cada semana</h2>
+        <p class="mt-3 text-[15px] text-ink/55 max-w-[46ch]">No son ejercicios aislados en una sala: así es entrenar en el campo, con distracciones reales y cada perro distinto.</p>
+      </div>
+      <a href="https://www.facebook.com/pimerkan/" target="_blank" rel="noopener" class="btn-link text-ink/60 hover:text-navy text-[13.5px] shrink-0">
+        Ver más en Facebook
+        <svg aria-hidden="true" focusable="false" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+
+    <!-- Protagonista + vertical -->
+    <div class="grid md:grid-cols-12 gap-5 md:gap-6 items-start">
+      <figure class="md:col-span-7 fade-up">
+        <div class="relative rounded-[20px] overflow-hidden shadow-image group aspect-[4/5] md:aspect-[4/4.8]">
+          <img src="img/cover.jpg" width="960" height="638" loading="lazy" alt="" class="absolute inset-0 w-full h-full object-cover object-[65%_25%] transition-transform duration-500 group-hover:scale-[1.02]"/>
+        </div>
+        <figcaption class="mt-3 text-[13.5px] text-ink/60">Sesión individual, Camí del Flix</figcaption>
+      </figure>
+
+      <figure class="md:col-span-5 fade-up">
+        <div class="relative rounded-[20px] overflow-hidden shadow-image group aspect-[4/5] md:aspect-[3/5]">
+          <img src="img/g8.jpg" width="206" height="206" loading="lazy" alt="Paseo de trabajo con perro de protección" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.02]"/>
+        </div>
+      </figure>
+    </div>
+
+    <!-- Secundarias, más pequeñas -->
+    <div class="grid md:grid-cols-3 gap-5 md:gap-6 mt-5 md:mt-6">
+      <figure class="fade-up">
+        <div class="relative rounded-2xl overflow-hidden group aspect-[4/3]">
+          <img src="img/gallery-1.jpg" width="206" height="206" loading="lazy" alt="Trabajo de obediencia con distracciones controladas" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"/>
+        </div>
+      </figure>
+
+      <figure class="fade-up">
+        <div class="relative rounded-2xl overflow-hidden group aspect-[4/3]">
+          <img src="img/gallery-4.jpg" width="206" height="206" loading="lazy" alt="" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"/>
+        </div>
+        <figcaption class="mt-3 text-[13.5px] text-ink/60">Ejercicio de rastreo en campo abierto</figcaption>
+      </figure>
+
+      <figure class="fade-up">
+        <div class="relative rounded-2xl overflow-hidden group aspect-[4/3]">
+          <img src="img/gallery-5.jpg" width="206" height="206" loading="lazy" alt="Rastreo en el entorno natural de Bigues i Riells" class="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"/>
+        </div>
+      </figure>
+    </div>
+
+  </div>
+</section>
+
+<!-- =================== UBICACIÓN =================== -->
+<!-- Editorial 40/60, sin card envolvente: la info vive directamente sobre el cream, el mapa recibe tratamiento de fotografía (mismo shadow-image que el resto de imágenes reales) para reforzar que el entorno es parte de la experiencia. -->
+<section id="zona" class="py-20 md:py-28 bg-cream">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="grid lg:grid-cols-5 gap-10 lg:gap-14 items-center">
+
+      <div class="lg:col-span-2 fade-up">
+        <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-navy mb-3">Dónde entrenamos</div>
+        <h2 class="font-serif font-medium text-[28px] sm:text-[32px] text-ink leading-tight">En pleno Camí del Flix</h2>
+        <p class="mt-4 text-[15px] text-ink/60 leading-relaxed max-w-[38ch]">Un entorno natural en Bigues i Riells: espacio real, distracciones controladas y aire libre para trabajar en condiciones reales.</p>
+        <ul class="mt-8 space-y-4 text-[14.5px] text-ink/75">
+          <li class="flex gap-3"><svg class="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3E563E" stroke-width="1.7" aria-hidden="true" focusable="false"><path d="M12 21s-7-5.5-7-11a7 7 0 0114 0c0 5.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.3"/></svg><span>Camí del Flix, Km 2,5 · 08415 Bigues i Riells, Barcelona</span></li>
+          <li class="flex gap-3"><svg class="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3E563E" stroke-width="1.7" aria-hidden="true" focusable="false"><path d="M4 5c0 8.3 6.7 15 15 15l3-4.5-6-2-1.7 2A13 13 0 018.5 8.7l2-1.7-2-6z"/></svg><a href="tel:+34675927409" class="hover:text-navy transition-colors">675 92 74 09 (Rafa)</a></li>
+          <li class="flex gap-3"><svg class="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#3E563E" stroke-width="1.7" aria-hidden="true" focusable="false"><path d="M3 6h18v12H3z"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:brisaika2@gmail.com" class="hover:text-navy transition-colors">brisaika2@gmail.com</a></li>
+        </ul>
+      </div>
+
+      <div class="lg:col-span-3 fade-up">
+        <div class="relative rounded-[20px] overflow-hidden shadow-image min-h-[300px] lg:min-h-[440px]">
+          <iframe loading="lazy" title="Mapa de ubicación de Pimerkan, Camí del Flix, Bigues i Riells" class="absolute inset-0 w-full h-full grayscale-[15%]" style="border:0" src="https://www.google.com/maps?q=Cam%C3%AD+del+Flix,+08415+Bigues+i+Riells,+Barcelona&output=embed"></iframe>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- =================== CTA FINAL =================== -->
+<!-- Jerarquía única: 1) mensaje 2) WhatsApp (única acción primaria) 3) teléfono como alternativa 4) formulario como segunda vía, sin WhatsApp duplicado dentro. -->
+<section id="contacto" class="py-28 md:py-36 bg-ink relative overflow-hidden">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8 relative">
+    <div class="grid lg:grid-cols-2 gap-14 items-start">
+
+      <div class="fade-up">
+        <div class="text-[12px] font-bold uppercase tracking-[0.16em] text-light-blue mb-3">Empecemos</div>
+        <h2 class="font-serif font-medium text-[32px] sm:text-[38px] text-cream leading-[1.15]">Cuéntame vuestro caso</h2>
+        <p class="mt-5 text-[15.5px] text-cream/60 leading-relaxed max-w-[42ch]">Explícame brevemente qué está pasando y vemos cuál puede ser la mejor forma de empezar.</p>
+        <div class="mt-8 flex flex-wrap items-center gap-x-6 gap-y-4">
+          <a href="https://wa.me/34675927409?text=Hola%20Rafa%2C%20quiero%20contarte%20mi%20caso" target="_blank" rel="noopener" class="btn-primary btn-primary--terracotta">
+            <svg aria-hidden="true" focusable="false" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.5 8.5 0 01-12.5 7.4L3 20l1.2-5.3A8.5 8.5 0 1121 11.5z"/></svg>
+            Escribir por WhatsApp
+          </a>
+          <a href="tel:+34675927409" class="text-[14.5px] text-cream/60 hover:text-cream transition-colors">o llama al <span class="text-cream/85">675 92 74 09</span></a>
+        </div>
+      </div>
+
+      <div class="fade-up">
+        <div class="text-[11px] font-bold text-cream/55 uppercase tracking-wide mb-5">O escríbeme desde aquí</div>
+
+        <!-- PROTOTIPO: sin backend todavía. TODO producción: sustituir el "preventDefault" de más abajo por un envío real a un endpoint / servicio de formularios (p.ej. Formspree, un backend propio, etc.) antes de publicar. -->
+        <form id="contact-form" class="border-t border-cream/10 pt-6" novalidate>
+          <div class="mb-5">
+            <label for="cf-name" class="block text-[12px] font-bold uppercase tracking-wide text-cream/55 mb-2">Nombre</label>
+            <input id="cf-name" name="nombre" type="text" required autocomplete="name" aria-describedby="cf-name-error" placeholder="Nombre y apellidos" class="w-full bg-transparent border-0 border-b border-cream/35 px-0 py-2.5 text-[16px] text-cream placeholder:text-cream/40 focus:outline-none focus:border-light-blue transition-colors"/>
+            <p id="cf-name-error" role="alert" hidden class="mt-1.5 text-[12.5px] text-terracotta">Escribe tu nombre.</p>
+          </div>
+          <div class="mb-5">
+            <label for="cf-phone" class="block text-[12px] font-bold uppercase tracking-wide text-cream/55 mb-2">Teléfono</label>
+            <input id="cf-phone" name="telefono" type="tel" required autocomplete="tel" aria-describedby="cf-phone-error" placeholder="600 000 000" class="w-full bg-transparent border-0 border-b border-cream/35 px-0 py-2.5 text-[16px] text-cream placeholder:text-cream/40 focus:outline-none focus:border-light-blue transition-colors"/>
+            <p id="cf-phone-error" role="alert" hidden class="mt-1.5 text-[12.5px] text-terracotta">Escribe un teléfono de contacto.</p>
+          </div>
+          <div class="mb-6">
+            <label for="cf-message" class="block text-[12px] font-bold uppercase tracking-wide text-cream/55 mb-2">Cuéntame qué pasa</label>
+            <textarea id="cf-message" name="mensaje" rows="3" required autocomplete="off" aria-describedby="cf-message-error" placeholder="Raza, edad, qué te gustaría trabajar..." class="w-full bg-transparent border-0 border-b border-cream/35 px-0 py-2.5 text-[16px] text-cream placeholder:text-cream/40 focus:outline-none focus:border-light-blue transition-colors resize-none"></textarea>
+            <p id="cf-message-error" role="alert" hidden class="mt-1.5 text-[12.5px] text-terracotta">Cuéntanos brevemente qué está pasando.</p>
+          </div>
+
+          <!-- TODO: enlazar "política de privacidad" con la URL legal real cuando esté disponible. No hacer clicable hasta entonces. -->
+          <p class="text-[12.5px] text-cream/55 leading-relaxed mb-6">Al enviar este formulario aceptas que usemos tus datos para responderte, según nuestra <span class="underline decoration-dotted underline-offset-2">política de privacidad</span>.</p>
+
+          <button type="submit" class="btn-secondary btn-secondary--light w-full">Enviar mensaje</button>
+        </form>
+
+        <div id="contact-form-notice" role="status" hidden class="border-t border-cream/10 pt-6">
+          <p class="text-[14.5px] text-cream/70 leading-relaxed">Este formulario es todavía una demo: de momento no está conectado a ningún sistema de envío, así que este mensaje no ha llegado a ningún sitio. Para contactar de verdad, usa el WhatsApp de arriba.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- =================== FOOTER =================== -->
+<footer class="bg-[#1F2F22] py-14">
+  <div class="max-w-6xl mx-auto px-5 sm:px-8">
+    <div class="flex flex-wrap justify-between gap-10 pb-8 border-b border-white/10">
+      <div class="max-w-xs">
+        <div class="flex items-center gap-2.5 mb-4">
+          <img src="img/logo-footer.png" alt="" width="320" height="306" loading="lazy" class="h-8 w-auto" />
+          <span class="font-serif font-medium text-[18px] text-white">Pimerkan</span>
+        </div>
+        <p class="text-[13.5px] text-white/55 leading-relaxed">Adiestramiento, modificación de conducta y psicología canina en Camí del Flix, Bigues i Riells.</p>
+      </div>
+      <nav aria-label="Enlaces del pie de página" class="flex gap-16 flex-wrap">
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-light-blue mb-4">Club</p>
+          <ul class="space-y-2.5 text-[14px] text-white/50">
+            <li><a href="#especialidades" class="hover:text-white transition-colors">Especialidades</a></li>
+            <li><a href="#metodo" class="hover:text-white transition-colors">Método</a></li>
+            <li><a href="#zona" class="hover:text-white transition-colors">Ubicación</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="text-[11px] font-bold uppercase tracking-[0.14em] text-light-blue mb-4">Contacto</p>
+          <ul class="space-y-2.5 text-[14px] text-white/50">
+            <li><a href="tel:+34675927409" class="hover:text-white transition-colors">675 92 74 09</a></li>
+            <li><a href="mailto:brisaika2@gmail.com" class="hover:text-white transition-colors">brisaika2@gmail.com</a></li>
+            <li><a href="https://www.facebook.com/pimerkan/" target="_blank" rel="noopener" class="hover:text-white transition-colors">Facebook</a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <div class="pt-6 flex flex-wrap justify-between gap-3 text-[12px] text-white/55">
+      <span>© 2026 Pimerkan · Asoc. Canina Pimerkan</span>
+      <span>Prototipo confidencial · Diseño y desarrollo <a href="https://sheisdigitalab.com" class="underline hover:text-white/70">She's Digital</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // ---------- Menú mobile ----------
+  (function () {
+    const btn = document.getElementById('mobile-menu-btn');
+    const panel = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
+    if (!btn || !panel) return;
+
+    function openMenu() {
+      panel.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      btn.setAttribute('aria-label', 'Cerrar menú');
+      iconOpen.hidden = true;
+      iconClose.hidden = false;
+    }
+    function closeMenu() {
+      panel.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-label', 'Abrir menú');
+      iconOpen.hidden = false;
+      iconClose.hidden = true;
+    }
+
+    btn.addEventListener('click', () => {
+      const isOpen = btn.getAttribute('aria-expanded') === 'true';
+      isOpen ? closeMenu() : openMenu();
+    });
+    panel.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && btn.getAttribute('aria-expanded') === 'true') {
+        closeMenu();
+        btn.focus();
+      }
+    });
+  })();
+
+  // ---------- Timeline Método ----------
+  function pkSetStep(n) {
+    document.querySelectorAll('.tl-step').forEach(el => {
+      const active = Number(el.dataset.step) === n;
+      el.setAttribute('data-active', String(active));
+      el.setAttribute('aria-expanded', String(active));
+      if (active) { el.setAttribute('aria-current', 'step'); } else { el.removeAttribute('aria-current'); }
+    });
+    const fill = document.getElementById('tlFill');
+    if (fill) fill.style.height = (n / 4 * 100) + '%';
+  }
+
+  // ---------- Formulario de contacto (PROTOTIPO, sin backend) ----------
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    const fields = [
+      { input: document.getElementById('cf-name'), error: document.getElementById('cf-name-error') },
+      { input: document.getElementById('cf-phone'), error: document.getElementById('cf-phone-error') },
+      { input: document.getElementById('cf-message'), error: document.getElementById('cf-message-error') },
+    ];
+
+    function setFieldError(field, show) {
+      field.input.setAttribute('aria-invalid', show ? 'true' : 'false');
+      field.input.classList.toggle('field-error', show);
+      field.error.hidden = !show;
+    }
+
+    fields.forEach(field => {
+      field.input.addEventListener('input', () => {
+        if (field.input.validity.valid) setFieldError(field, false);
+      });
+    });
+
+    contactForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      let firstInvalid = null;
+      fields.forEach(field => {
+        const valid = field.input.checkValidity();
+        setFieldError(field, !valid);
+        if (!valid && !firstInvalid) firstInvalid = field.input;
+      });
+      if (firstInvalid) { firstInvalid.focus(); return; }
+
+      // TODO producción: aquí es donde debe ir el envío real (fetch a un endpoint propio o a un
+      // servicio de formularios). Mientras no exista backend, no se hace ninguna petición ni se
+      // simula un "Enviando..." o un envío exitoso: solo mostramos un aviso honesto de que esto
+      // es una demo (ver #contact-form-notice). El formulario y los datos introducidos se mantienen visibles.
+      document.getElementById('contact-form-notice').hidden = false;
+    });
+  }
+
+  // ---------- Scroll reveal ----------
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('in'), i * 50);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
